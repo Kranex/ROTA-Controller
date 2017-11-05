@@ -1,3 +1,20 @@
+/*
+** Copyright 2017 Oliver Strik
+** oliverstrik@gmail.com
+**
+** Licensed under the Apache License, Version 2.0 (the "License");
+** you may not use this file except in compliance with the License.
+** You may obtain a copy of the License at
+**
+**    http://www.apache.org/licenses/LICENSE-2.0
+**
+** Unless required by applicable law or agreed to in writing, software
+** distributed under the License is distributed on an "AS IS" BASIS,
+** WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+** See the License for the specific language governing permissions and
+** limitations under the License.
+*/
+
 package io.github.kranex.rota;
 
 import android.graphics.Canvas;
@@ -31,9 +48,9 @@ public class Joystick extends Drawable{
     public void draw(Canvas canvas){
         /* if it's visible */
         if(isVisible()) {
-            //canvas.drawCircle(x0, y0, d/2, bounds); // i like circles but the current rota won't work well with them.
+            canvas.drawCircle(x0, y0, d/2, bounds);
             // draw a rectangle body, from the origin.
-            canvas.drawRect(x0-d/2,y0-d/2, x0+d/2, y0+d/2, bounds);
+            //canvas.drawRect(x0-d/2,y0-d/2, x0+d/2, y0+d/2, bounds);
             // draw a circular hat from the hat location.
             canvas.drawCircle(x, y, d/4, stick);
 
@@ -76,7 +93,7 @@ public class Joystick extends Drawable{
         return this.y0;
     }
 
-    /* set the hat location, use math to prevent the hat from being outside the body */
+    /* set the hat location, use math to prevent the hat from being outside the body
     public void setXY(float x, float y){
         if(x >= x0-d/2 && x <= x0+d/2) {
             this.x = x;
@@ -93,8 +110,9 @@ public class Joystick extends Drawable{
         }
 
     }
+    */
     // the same thing but for circles.
-    /*public void setXY(float x, float y){
+    public void setXY(float x, float y){
         float r = d/2;
         float x1 = getX0()-x;
         float y1 = getY0()-y;
@@ -117,7 +135,7 @@ public class Joystick extends Drawable{
             this.x = x;
             this.y = y;
         }
-    }*/
+    }
 
     // set the alpha, required by Drawable.
     public void setAlpha(int a){
