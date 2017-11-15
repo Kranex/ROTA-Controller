@@ -31,6 +31,8 @@ public class Client {
     public OutputStream out; // the output stream.
     public BufferedReader in; // the input stream.
 
+    private Boolean running = false;
+
     public Client(String host, int port){
 
         openSocket(host, port);
@@ -65,12 +67,21 @@ public class Client {
         }
         try {
             socket.close();
+            socket = null;
         }catch(Exception e) {
             //TODO
         }
+        setRunning(false);
     }
     /* returns if the client is connected. */
     public boolean isConnected() {
         return socket != null && socket.isConnected();
     }
+
+    public boolean isRunning(){
+        return running;
+    }
+    public void setRunning(Boolean bol){
+        running = bol;
+    };
 }

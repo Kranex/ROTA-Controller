@@ -160,12 +160,15 @@ public class RotaActivity extends AppCompatActivity {
         clientThread = new Thread(new Runnable() {
             @Override
             public void run() {
+
+
                 // prevents the client thread from taking higher priority than the app.
                 android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
-                while(!Thread.interrupted()){
+                while(client == null || client.isRunning()){
                     // if client is not connected;
                     if(client == null || !client.isConnected()) {
                         startClient();
+                        client.setRunning(true);
                     }else {
                         // construct the data to be sent.
                         final byte[] data = {42, (byte) (joystickView.leftJoy.getInfluenceX()),
@@ -176,10 +179,11 @@ public class RotaActivity extends AppCompatActivity {
                             client.out.write(data);
                             client.out.flush(); // not strictly required but useful.
                         } catch (IOException e) {
-                            Log.e("SEND", e.getMessage());
+                            client.kill();
+                            client.setRunning(false);
                         }
                         try {
-                            Thread.sleep(5);
+                            Thread.sleep(30);
                         }catch(Exception e){};
                     }
                 }
@@ -193,7 +197,7 @@ public class RotaActivity extends AppCompatActivity {
         super.onStop();
         // if the app is ever frozen, ie. screen locks, or user minimises app, kill it.
         // the client doesn't like that ****.
-        clientThread.interrupt();
+        client.setRunning(false);
         client.kill();
         finish();
     }
@@ -210,6 +214,5 @@ public class RotaActivity extends AppCompatActivity {
 
         }while(!client.isConnected());
         joystickView.setConnected(true);
-        joystickView.invalidate();
     }
 }
